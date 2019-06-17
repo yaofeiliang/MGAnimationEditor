@@ -2,6 +2,7 @@
 Motion Graphics Animation Editor
 
 MG动画编辑器
+演示：https://yaofeiliang.github.io/MGAnimationEditor/views/yaoCanvas.html
 
 ![avatar](public/images/readme1.png)
 
