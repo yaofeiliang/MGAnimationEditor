@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="/javascripts/konva.js"></script>
+  <script src="/javascripts/Tween.min.js"></script>
+  <script src="/javascripts/three.min.js"></script>
+  <script src="/javascripts/yaofeiliang.CanvasTimeLine2.js"></script>
+
+  <script src="/javascripts/yaofeiliang.signal-js.min.js"></script>
+  <script src="/javascripts/yaofeiliang.ContentUI.js"></script>
+  <script src="/javascripts/yaofeiliang.CanvasInput.min.js"></script>
+  <!--<script src="/javascripts/yaofeiliang.colorPicker.js"></script>-->
+  <script src="/javascripts/yaofeiliang.color_Picker_new.js"></script>
+
+  <script type="text/javascript" src="/javascripts/paper-full.js"></script>
+  <script type="text/javascript" src="/javascripts/yaofeiliang.Util.paper.20190508.js"></script>
+</head>
+<style>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    color: #e6e6e6;
+    font-family: Lato, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    background-color: #E6E6E6;
+    overflow: hidden;
+  }
+
+  /*css代码*/
+  #menu {
+    width: 0;
+    /*设置为0 隐藏自定义菜单*/
+    height: 125px;
+    overflow: hidden;
+    /*隐藏溢出的元素*/
+    box-shadow: 0 1px 1px #888, 1px 0 1px #ccc;
+    position: absolute;
+    /*自定义菜单相对与body元素进行定位*/
+    background: black;
+    opacity: 0.8;
+  }
+
+  .menu {
+    width: 130px;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+</style>
+
+<body>
+  <!--<div id="canvasTimeLine"></div>-->
+  <script>
+    window.oncontextmenu = function (e) {
+      //取消默认的浏览器自带右键 很重要！！
+      e.preventDefault();
+      console.dir('右键')
+      //获取我们自定义的右键菜单
+      var menu = document.querySelector("#menu");
+
+      //根据事件对象中鼠标点击的位置，进行定位
+      menu.style.left = e.clientX + 'px';
+      menu.style.top = e.clientY + 'px';
+
+      //改变自定义菜单的宽，让它显示出来
+      menu.style.width = '125px';
+    }
+    //关闭右键菜单，很简单
+    window.onclick = function (e) {
+      //用户触发click事件就可以关闭了，因为绑定在window上，按事件冒泡处理，不会影响菜单的功能
+      document.querySelector('#menu').style.width = 0;
+      console.dir('关闭');
+      console.dir(e.target.attributes['attrtype']);
+      if (e.target.attributes['attrtype'] && e.target.attributes['attrtype'].value == 'addkeyframe') {
+        console.dir('addkeyframe');
+        if (up.centre_canvas.canvasDom.selectNode.className == 'Group') {
+          console.dir(up.centre_canvas.canvasDom.selectNode);
+          console.dir(up.centre_canvas.canvasDom.selectNode.temp_control);
+          console.dir(up.centre_canvas.canvasDom.selectNode._styles);
+        }
+
+        if (up.centre_canvas.canvasDom.selectNode.className == 'Group'
+          || up.centre_canvas.canvasDom.selectNode.className == 'Raster'
+          /*&&up.centre_canvas.canvasDom.selectNode.typename&&
+          up.centre_canvas.canvasDom.selectNode.typename=='merge_group'*/
+        ) {
+          if (!up.centre_canvas.canvasDom.selectNode.keyframe) {
+            up.centre_canvas.canvasDom.selectNode.keyframe = [
+              {
+                time: up.content_body_canvasTimeLine.right.head.attr.play_timestamp,
+                exportJSON: JSON.stringify(up.centre_canvas.canvasDom.selectNode._styles.temp_control),//up.centre_canvas.canvasDom.selectNode.exportJSON()
+                temp_control: JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control)
+              }];
+          } else {
+            let iscunzai = false
+            for (let ki = 0; ki < up.centre_canvas.canvasDom.selectNode.keyframe.length; ki++) {
+              if (up.centre_canvas.canvasDom.selectNode.keyframe[ki].time == up.content_body_canvasTimeLine.right.head.attr.play_timestamp) {
+                up.centre_canvas.canvasDom.selectNode.keyframe[ki].exportJSON = JSON.stringify(up.centre_canvas.canvasDom.selectNode._styles.temp_control);
+                up.centre_canvas.canvasDom.selectNode.keyframe[ki].temp_control = JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control);
+                iscunzai = true;
+                break;
+              }
+            }
+            if (!iscunzai) {
+              up.centre_canvas.canvasDom.selectNode.keyframe.push(
+                {
+                  time: up.content_body_canvasTimeLine.right.head.attr.play_timestamp,
+                  exportJSON: JSON.stringify(up.centre_canvas.canvasDom.selectNode._styles.temp_control),
+                  temp_control: JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control)
+                }
+              );
+            }
+          }
+          //console.dir(up.centre_canvas.canvasDom.selectNode.temp_control)
+
+        } else
+          if (!up.centre_canvas.canvasDom.selectNode.keyframe) {
+            up.centre_canvas.canvasDom.selectNode.keyframe = [
+              {
+                time: up.content_body_canvasTimeLine.right.head.attr.play_timestamp,
+                exportJSON: up.centre_canvas.canvasDom.selectNode.exportJSON(),
+                temp_control: JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control)
+              }];
+          } else {
+            let iscunzai = false
+            for (let ki = 0; ki < up.centre_canvas.canvasDom.selectNode.keyframe.length; ki++) {
+              if (up.centre_canvas.canvasDom.selectNode.keyframe[ki].time == up.content_body_canvasTimeLine.right.head.attr.play_timestamp) {
+                up.centre_canvas.canvasDom.selectNode.keyframe[ki].exportJSON = up.centre_canvas.canvasDom.selectNode.exportJSON();
+                up.centre_canvas.canvasDom.selectNode.keyframe[ki].temp_control = JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control);
+                iscunzai = true;
+                break;
+              }
+            }
+            if (!iscunzai) {
+              up.centre_canvas.canvasDom.selectNode.keyframe.push(
+                {
+                  time: up.content_body_canvasTimeLine.right.head.attr.play_timestamp,
+                  exportJSON: up.centre_canvas.canvasDom.selectNode.exportJSON(),
+                  temp_control: JSON.stringify(up.centre_canvas.canvasDom.selectNode.temp_control)
+                }
+              );
+            }
+          }
+        up.content_body_canvasTimeLine.refresh(up.centre_canvas.canvasDom.selectNode);
+        //centre_canvas
+      } else if (e.target.attributes['attrtype'] && e.target.attributes['attrtype'].value == 'merge') {
+        //className Group  typename  temp_group
+        if (up.centre_canvas.canvasDom.selectNode.className == 'Group') {
+          if (up.centre_canvas.canvasDom.selectNode.typename && up.centre_canvas.canvasDom.selectNode.typename == 'temp_group') {
+            up.centre_canvas.canvasDom.selectNode.typename = 'merge_group';
+          }
+        }
+        console.dir('merge');
+        console.dir(up.centre_canvas.canvasDom.selectNode.typename);
+        console.dir(up.centre_canvas.canvasDom.selectNode);
+      } else if (e.target.attributes['attrtype'] && e.target.attributes['attrtype'].value == 'split') {
+        if (up.centre_canvas.canvasDom.selectNode.className == 'Group') {
+          if (up.centre_canvas.canvasDom.selectNode.typename && up.centre_canvas.canvasDom.selectNode.typename == 'merge_group') {
+            up.centre_canvas.canvasDom.selectNode.typename = 'temp_group';
+          }
+        }
+        console.dir('split');
+        console.dir(up.centre_canvas.canvasDom.selectNode.typename);
+        console.dir(up.centre_canvas.canvasDom.selectNode);
+      }
+    }
+
+
+
+
+    var Signal = signals.Signal;
+    let ui = new ContentUI();
+    let historyUtil = new HistoryUtil();
+    let up = new UP();
+
+    window.addEventListener('resize', function () {
+      ui.signal.dispatch(ui);
+    }, false);
+  </script>
+  <!--自定义右键菜单html代码-->
+  <div id="menu">
+    <div class="menu" attrtype="addkeyframe">插入关键帧</div>
+    <div class="menu" attrtype="removekeyframe">删除关键帧</div>
+    <div class="menu" attrtype="merge">合并</div>
+    <div class="menu" attrtype="split">拆分</div>
+  </div>
+</body>
+
+</html>
