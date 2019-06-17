@@ -5801,20 +5801,20 @@ class Content_body_left_attr_canvas extends ContentCanvas{
     that.layer.add( line );
     //======================================
     var imagesarr=[
-      '/images/nv1.jpeg',
-      '/images/nv2.jpeg',
-      '/images/nv3.jpeg',
-      '/images/nv4.jpeg',
-      '/images/nv5.jpeg',
-      '/images/nv6.jpeg',
-      '/images/nv7.jpeg',
-      '/images/nv8.jpeg',
-      '/images/nv9.jpeg',
-      '/images/nv10.jpeg',
-      '/images/nv11.jpeg',
-      '/images/nv12.jpeg',
-      '/images/nv13.jpeg',
-      '/images/nv14.jpeg'
+      '../public/images/nv1.jpeg',
+      '../public/images/nv2.jpeg',
+      '../public/images/nv3.jpeg',
+      '../public/images/nv4.jpeg',
+      '../public/images/nv5.jpeg',
+      '../public/images/nv6.jpeg',
+      '../public/images/nv7.jpeg',
+      '../public/images/nv8.jpeg',
+      '../public/images/nv9.jpeg',
+      '../public/images/nv10.jpeg',
+      '../public/images/nv11.jpeg',
+      '../public/images/nv12.jpeg',
+      '../public/images/nv13.jpeg',
+      '../public/images/nv14.jpeg'
     ];
     let count=0;
     for(let imagei=0;imagei<imagesarr.length;imagei++){
@@ -7523,7 +7523,7 @@ class Content_centre_canvas_canvas extends ContentCanvas{
     });
     this.layer.add( ellipse );
     /*Image*/
-    Konva.Image.fromURL('images/timg.png', function(image){
+    Konva.Image.fromURL('../public/images/timg.png', function(image){
       image.cache({
         x: 330,
         y: 330,
@@ -7944,7 +7944,7 @@ class Content_head_canvas extends ContentCanvas{
       that.layer.add( image );
       that.layer.draw();
     };
-    imageObj.src = '/images/logo_new2.png'
+    imageObj.src = '../public/images/logo_new2.png'
   }
   projectConfig_init(){
     let that = this;
